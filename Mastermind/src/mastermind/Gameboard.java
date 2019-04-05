@@ -129,7 +129,9 @@ public class Gameboard {
             Utility.displayGuessResult("Result: ",result);
             if(result.isGuessed(this.codeLength)) this.win = true;
             else{
-                
+                int count = ai.cleanSolutions(result);
+                ai.minimax();
+                /*
                 //clean solutions
                 int count = ai.cleanSolutions(result);
                 //minimax
@@ -148,6 +150,7 @@ public class Gameboard {
                 }
                 
                 //ai.setNextGuesses();
+                */
             }
             this.attempt++;
         }while(!gameOver());

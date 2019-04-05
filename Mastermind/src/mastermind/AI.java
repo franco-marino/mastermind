@@ -150,6 +150,18 @@ public class AI {
     }
 
     public void minimax() {
+        for(Code combination : this.combinations){
+            for(Code candidate : this.candidatedSolutions){
+                GuessResult pegScore = gameboard.checkCode(new Code(combination), new Code(candidate));
+                registerScoreCount(pegScore);
+            }
+            int maxScore = getMaxScore();
+            registerScore(combination, maxScore);
+            clearScoresCount();    
+        }
+        
+        
+        
         
     }
    
