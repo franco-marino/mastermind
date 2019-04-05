@@ -43,6 +43,14 @@ public class Gameboard {
         this.win = false;
         this.codeLength = this.gameCode.getCodeLength();
     }
+    
+    public Gameboard(Gameboard gameboard){
+       this.AI = gameboard.AI;
+       this.attempt = gameboard.attempt;
+       this.gameCode = gameboard.gameCode;
+       this.win = gameboard.win;
+       this.codeLength = gameboard.codeLength;
+    }
 
     public int getCodeLength() {
         return codeLength;
@@ -85,6 +93,7 @@ public class Gameboard {
             System.out.println("AI is playing");
             playAI();
         } else{
+            System.out.println("User is playing");
             playUser();
         }
     }
@@ -109,11 +118,9 @@ public class Gameboard {
     
     private void playAI(){
         //set combinations
-        AI ai = new AI();
-        System.out.println(Utility.getColor(1, 1));
+        AI ai = new AI(new Gameboard(this));
         do{
-            System.out.println("Code L:" +this.codeLength);
-            ArrayList<Code> combs = ai.getCombinations();
+            //ArrayList<Code> combs = ai.getCombinations();
             ai.removeCombination(ai.getCurrentGuess());
             ai.removeCandidatedSolution(ai.getCurrentGuess());
            
@@ -122,10 +129,11 @@ public class Gameboard {
             Utility.displayGuessResult("Result: ",result);
             if(result.isGuessed(this.codeLength)) this.win = true;
             else{
-                /*
+                
                 //clean solutions
-                System.out.println(cleanAISolutions(ai.getCandidatedSolutions(),result)+ " candidate solutions deleted");
+                int count = ai.cleanSolutions(result);
                 //minimax
+                ai.minimax();
                 for(Code combCode:ai.getCombinations()){
                     for(Code candidateCode:ai.getCandidatedSolutions()){
                         GuessResult pegScore = checkCode(new Code(combCode), new Code(candidateCode));
@@ -139,23 +147,12 @@ public class Gameboard {
                     
                 }
                 
-                //ai.setNextGuesses();*/
+                //ai.setNextGuesses();
             }
             this.attempt++;
         }while(!gameOver());
         
         
-    }
-    
-    private int cleanAISolutions(ArrayList<Code> solutions,GuessResult resultToCheck){
-        int count=0;
-        for(Code c:solutions){
-            GuessResult result = checkCode(new Code(c),new Code(this.gameCode));
-            if(result.equals(resultToCheck)){
-                count ++;
-            }
-        }
-        return count;
     }
     
     private void playUser() throws IOException{
@@ -184,6 +181,7 @@ public class Gameboard {
             if(code.getPeg(i).isEquals(guess.getPeg(i))) {
                 count++;
                 guess.getPeg(i).setColor(Colors.None);
+                code.getPeg(i).setColor(Colors.None);
             }
         }
         return count;
@@ -192,11 +190,15 @@ public class Gameboard {
     private int onlyValuesCorrect(Code guess,Code code){
         int count=0;
         for(Peg p : guess.getCode()){
-            int gameCodeIndex = code.contains(p);
-            if(gameCodeIndex >= 0 && gameCodeIndex != guess.getPegIndex(p) && p.getColor()!=Colors.None) {
-                count ++;
-                p.setColor(Colors.None);
+            if(p.getColor() != Colors.None){
+                int gameCodeIndex = code.contains(p);
+                if(gameCodeIndex >= 0 && gameCodeIndex != guess.getPegIndex(p)) {
+                    count ++;
+                    p.setColor(Colors.None);
+                    code.getPeg(gameCodeIndex).setColor(Colors.None);
+                }
             }
+            
         }
         return count;
     }

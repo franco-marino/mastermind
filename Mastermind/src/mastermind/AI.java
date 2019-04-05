@@ -25,13 +25,15 @@ public class AI {
     private HashMap<Code,Integer> scores;
     private Code currentGuess;
     private ArrayList<Code> nextGuesses;
+    private Gameboard gameboard;
     
-    public AI(){
-        createSet();
+    public AI(Gameboard gameboard){
         this.currentGuess = new Code(new int[]{1,1,2,2});
         this.scoresCount = new HashMap<>();
         this.scores = new HashMap<>();
         this.nextGuesses = new ArrayList();
+        this.gameboard = new Gameboard(gameboard);
+        createSet();
     }
     
     private void createSet(){
@@ -81,14 +83,8 @@ public class AI {
         return index;
     }
     
-    public int removeCandidatedSolution(Code codeToRemove){
-        int index=-1;
-        for(Code c:this.candidatedSolutions){
-            if(c.isEquals(codeToRemove)) index = this.candidatedSolutions.indexOf(c);
-        }
-        if(index!=-1) this.candidatedSolutions.remove(index);
-        
-        return index;
+    public void removeCandidatedSolution(Code c){
+        this.candidatedSolutions.remove(c);
     }
     
     public void registerScoreCount(GuessResult pegScore){
@@ -134,8 +130,27 @@ public class AI {
         return new Code();
     }
     
-    void clearScoresCount() {
+    public void clearScoresCount() {
         this.scoresCount.clear();
+    }
+
+    public int cleanSolutions(GuessResult resultToCheck) {
+        ArrayList<Code> codesToRemove = new ArrayList();
+        int count=0;
+        for(Code c:this.candidatedSolutions){
+            GuessResult result = gameboard.checkCode(new Code(c),new Code(gameboard.getGameCode()));
+            if(!result.equals(resultToCheck)){
+                codesToRemove.add(c);
+                count ++;
+            }
+        }
+        
+        this.candidatedSolutions.removeAll(codesToRemove);
+        return count;
+    }
+
+    public void minimax() {
+        
     }
    
 }
