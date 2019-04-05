@@ -21,17 +21,11 @@ public class AI {
     private final int MAX_COMBINATION = 1296;
     private final int CODE_LENGTH = 4;
     private final int NUM_COLORS = 6;
-    private HashMap<GuessResult, Integer> scoresCount;
-    private HashMap<Code,Integer> scores;
     private Code currentGuess;
-    private ArrayList<Code> nextGuesses;
     private Gameboard gameboard;
     
     public AI(Gameboard gameboard){
         this.currentGuess = new Code(new int[]{1,1,2,2});
-        this.scoresCount = new HashMap<>();
-        this.scores = new HashMap<>();
-        this.nextGuesses = new ArrayList();
         this.gameboard = new Gameboard(gameboard);
         createSet();
     }
@@ -87,53 +81,15 @@ public class AI {
         this.candidatedSolutions.remove(c);
     }
     
-    public void registerScoreCount(GuessResult pegScore){
-        if(this.scoresCount.containsKey(pegScore)) {
-            this.scoresCount.replace(pegScore,this.scoresCount.get(pegScore));
+    public void registerScoreCount(HashMap<GuessResult,Integer> scoresCount,GuessResult pegScore){
+        if(scoresCount.containsKey(pegScore)) {
+            scoresCount.replace(pegScore,scoresCount.get(pegScore));
         }
         else {
-            this.scoresCount.put(pegScore,1);
+            scoresCount.put(pegScore,1);
         }
     }
     
-    public void registerScore(Code c, int score){
-        this.scores.put(c, score);
-    }
-    
-    
-    public int getMaxScore(){
-        return (Collections.max(this.scoresCount.values()));
-    }
-    
-    public int getMinScore(){
-        return (Collections.min(this.scores.values()));
-    }
-    
-    public void setNextGuesses(){
-        int min = getMinScore();
-        
-        for(Map.Entry<Code,Integer> entry:scores.entrySet()){
-            if(entry.getValue() == min) this.nextGuesses.add(entry.getKey());
-        }
-    }
-    
-    public Code getNextGuess(){
-        
-        for(Code c:this.nextGuesses){
-            if(this.candidatedSolutions.contains(c)) return c;
-        }
-        
-        for(Code c:this.nextGuesses){
-            if(this.combinations.contains(c)) return c;
-        }
-        
-        return new Code();
-    }
-    
-    public void clearScoresCount() {
-        this.scoresCount.clear();
-    }
-
     public int cleanSolutions(GuessResult resultToCheck) {
         ArrayList<Code> codesToRemove = new ArrayList();
         int count=0;
@@ -148,19 +104,47 @@ public class AI {
         this.candidatedSolutions.removeAll(codesToRemove);
         return count;
     }
-
+    
     public void minimax() {
+        HashMap<GuessResult, Integer> scoresCount = new HashMap();
+        HashMap<Code,Integer> scores = new HashMap();
+        ArrayList<Code> nextGuesses = new ArrayList();
+        
         for(Code combination : this.combinations){
             for(Code candidate : this.candidatedSolutions){
                 GuessResult pegScore = gameboard.checkCode(new Code(combination), new Code(candidate));
-                registerScoreCount(pegScore);
+                registerScoreCount(scoresCount,pegScore);
             }
-            int maxScore = getMaxScore();
-            registerScore(combination, maxScore);
-            clearScoresCount();    
+            int maxScore = (Collections.max(scoresCount.values()));
+            scores.put(combination, maxScore);
+            scoresCount.clear();   
+        }
+        int min =(Collections.min(scores.values()));
+        
+        for(Map.Entry<Code,Integer> entry : scores.entrySet()){
+            if(entry.getValue() == min) nextGuesses.add(new Code(entry.getKey()));
         }
         
-        
+        //get best guess
+        boolean found = false;
+        for(Code code : nextGuesses){
+            for(Code candidate: this.candidatedSolutions){
+                if(candidate.isEquals(code)){
+                    this.currentGuess = new Code(code);
+                    found = true;
+                }
+            }
+        }
+        if(!found){
+            for(Code code: nextGuesses){
+                for(Code combination: this.combinations){
+                    if(combination.isEquals(code)) {
+                        this.currentGuess = new Code(code);
+                        found = true;
+                    }
+                }
+            }
+        }
         
         
     }
