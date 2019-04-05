@@ -120,7 +120,6 @@ public class Gameboard {
         //set combinations
         AI ai = new AI(new Gameboard(this));
         do{
-            //ArrayList<Code> combs = ai.getCombinations();
             ai.removeCombination(ai.getCurrentGuess());
             ai.removeCandidatedSolution(ai.getCurrentGuess());
            
@@ -130,27 +129,8 @@ public class Gameboard {
             if(result.isGuessed(this.codeLength)) this.win = true;
             else{
                 int count = ai.cleanSolutions(result);
+                System.out.println("Number of codes deleted from candidate: " + count);
                 ai.minimax();
-                /*
-                //clean solutions
-                int count = ai.cleanSolutions(result);
-                //minimax
-                ai.minimax();
-                for(Code combCode:ai.getCombinations()){
-                    for(Code candidateCode:ai.getCandidatedSolutions()){
-                        GuessResult pegScore = checkCode(new Code(combCode), new Code(candidateCode));
-                        ai.registerScoreCount(pegScore);
-                        ai.clearScoresCount();
-                    }
-                    
-                    int maxScore = ai.getMaxScore();
-                    System.out.println(maxScore);
-                    //ai.registerScore(combCode, maxScore);
-                    
-                }
-                
-                //ai.setNextGuesses();
-                */
             }
             this.attempt++;
         }while(!gameOver());
