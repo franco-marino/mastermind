@@ -17,31 +17,49 @@ public class Utility {
     private final static BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in));
     
     
-    private static void printBanner(){
-        System.out.println("Mastermind by franco-marino");
+    public static void printBanner(){
+        String banner = "  __  __           _                      _           _  \n" +
+        " |  \\/  |         | |                    (_)         | | \n" +
+        " | \\  / | __ _ ___| |_ ___ _ __ _ __ ___  _ _ __   __| | \n" +
+        " | |\\/| |/ _` / __| __/ _ \\ '__| '_ ` _ \\| | '_ \\ / _` | \n" +
+        " | |  | | (_| \\__ \\ ||  __/ |  | | | | | | | | | | (_| | \n" +
+        " |_|  |_|\\__,_|___/\\__\\___|_|  |_| |_| |_|_|_| |_|\\__,_| \n" +
+        "                                                         \n" +
+        "                                                         ";
+        String rules = "Welcome, Mastermind is a code-breaking game. The purpose is to guess the secret code decided by the player or AI\n"
+                        + "according to the chosen game mode. There are 6 colors and the code consists of 6 pegs, duplicates are allowed.\n"
+                        + "You win if the code is matched within 10 attempts.Every time you try to guess the gameboard returns a code formed by\n"
+                        + "red and white pegs: the red ones indicate the number of pegs of the right color and in the right position, \n"
+                        + "the white ones indicate the pegs of the right color but in the wrong position. Have fun with the mastermind! ";
+        System.out.println(banner);
+        System.out.println(rules);
     }
     
     public static Gameboard initGame() throws IOException{
         Gameboard game = null;
         int codeLength;
         boolean AI;
-        printBanner();
-        System.out.println("[*] Choose settings:");
+        StringBuilder menu = new StringBuilder();
+        menu.append("------------------------\n");
+        menu.append("|        MENU          |\n");
+        menu.append("|----------------------|\n");
+        menu.append("|   1) You vs AI       |\n");
+        menu.append("|----------------------|\n");
+        menu.append("|   2) AI vs You       |\n");
+        menu.append("|----------------------|\n");
+        menu.append("|   3) Exit            |\n");
+        menu.append("------------------------\n");
+        System.out.println(menu.toString());
         
-        System.out.println("[*] Game mode: ");
-        System.out.println("\t1) You vs CPU");
-        System.out.println("\t2) CPU vs You (You decide the code and the CPU try to guess it)");
-        AI = (askForInteger("Choose: ",1,2)==1) ? false : true;
-        
-        if(AI){
-            codeLength = 4;
-            printColorsMenu();
-            Code code = askForCode(codeLength);
-            game = new Gameboard(code);
-        }else{
-            System.out.println("[*] Code length: ");
-            codeLength = askForInteger("Choose (between 3 and 6): ", 3, 6);
-            game = new Gameboard(codeLength);
+        int choose = askForInteger("Choose: ",1,3);
+        if(choose != 3){
+            if(choose == 2){
+                printColorsMenu();
+                Code code = askForCode(4);
+                game = new Gameboard(code);
+            }else{
+                game = new Gameboard();
+            }
         }
         
         return game;
@@ -159,10 +177,11 @@ public class Utility {
     }
     
     private static void printColorsMenu(){
-        System.out.println("[*] Choose yout code values:");
+        System.out.print("[*] The colors that you can choose: ");
         for(Colors temp :  Colors.values()){
-            System.out.printf("%d) %s%n",temp.ordinal()+1,temp.name());
+            if(temp!=Colors.None) System.out.print(temp.name() + " ");
         }
+        System.out.println();
     }
 
     public static void printInteger(String message,int integerToDisplay){
@@ -203,11 +222,11 @@ public class Utility {
         System.out.println();
     }
 
-    static void displayWinMessage() {
-        System.out.println("Congratulations win!");
+    static void displayWinMessage(String player) {
+        System.out.println(player + " win!");
     }
 
-    static void displayFailMessage() {
-        System.out.println("Oh no, you lose :(. Try again");
+    static void displayFailMessage(String player) {
+        System.out.println("Oh no, " +player+ " lost :(\nTry again");
     }
 }
