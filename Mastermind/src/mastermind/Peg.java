@@ -56,7 +56,7 @@ public class Peg {
         return coloredPeg;
     }
     
-    public boolean isEquals(Peg p){
+    public boolean equals(Peg p){
         return (this.color.equals(p.getColor()));
     }
     
