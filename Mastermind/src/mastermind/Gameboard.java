@@ -24,7 +24,7 @@ public class Gameboard {
     private Code gameCode;
     private boolean win;
     private final int MAX_GAME_ATTEMPTS = 10;
-    private final int MAX_AI_ATTEMPTS = 5;
+    private final int MAX_AI_ATTEMPTS = 10;
     
     //Player vs CPU
     public Gameboard(int codeLength) {
@@ -120,6 +120,7 @@ public class Gameboard {
         //set combinations
         AI ai = new AI(new Gameboard(this));
         do{
+            Utility.printInteger("Attempt: ", attempt);
             ai.removeCombination(ai.getCurrentGuess());
             ai.removeCandidatedSolution(ai.getCurrentGuess());
            
@@ -129,12 +130,12 @@ public class Gameboard {
             if(result.isGuessed(this.codeLength)) this.win = true;
             else{
                 int count = ai.cleanSolutions(result);
-                System.out.println("Number of codes deleted from candidate: " + count);
                 ai.minimax();
             }
             this.attempt++;
         }while(!gameOver());
-        
+        if(win) Utility.displayWinMessage();
+        else Utility.displayFailMessage();
         
     }
     

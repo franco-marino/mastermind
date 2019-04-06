@@ -77,8 +77,13 @@ public class AI {
         return index;
     }
     
-    public void removeCandidatedSolution(Code c){
-        this.candidatedSolutions.remove(c);
+    public int removeCandidatedSolution(Code codeToRemove){
+        int index =-1;
+        for(Code c : this.candidatedSolutions){
+            if(c.isEquals(codeToRemove)) index = this.candidatedSolutions.indexOf(c);
+        }
+        if(index != -1) this.combinations.remove(index);
+        return index;
     }
     
     public void registerScoreCount(HashMap<GuessResult,Integer> scoresCount,GuessResult pegScore){
@@ -94,7 +99,7 @@ public class AI {
         ArrayList<Code> codesToRemove = new ArrayList();
         int count=0;
         for(Code c:this.candidatedSolutions){
-            GuessResult result = gameboard.checkCode(new Code(c),new Code(gameboard.getGameCode()));
+            GuessResult result = gameboard.checkCode(new Code(this.currentGuess),new Code(c));
             if(!result.equals(resultToCheck)){
                 codesToRemove.add(c);
                 count ++;

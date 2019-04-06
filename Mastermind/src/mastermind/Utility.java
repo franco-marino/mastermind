@@ -202,4 +202,12 @@ public class Utility {
         }
         System.out.println();
     }
+
+    static void displayWinMessage() {
+        System.out.println("Congratulations win!");
+    }
+
+    static void displayFailMessage() {
+        System.out.println("Oh no, you lose :(. Try again");
+    }
 }
