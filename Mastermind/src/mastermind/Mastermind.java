@@ -19,12 +19,17 @@ public class Mastermind {
      */
     public static void main(String[] args) throws IOException, InterruptedException {
         boolean restart = false;
+        printBanner();
         do{
             Gameboard gameboard = initGame();
-            gameboard.play();
-            restart = restartGame();
-            clearConsole();
+            if(gameboard !=null){
+                 gameboard.play();
+                restart = restartGame();
+                clearConsole();
+            } else restart = false;
         }while(restart);
+        
+        System.out.println("Thank you for playing!");
     }
     
 }
