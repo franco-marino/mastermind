@@ -18,7 +18,6 @@ public class AI {
  
     private ArrayList<Code> combinations;
     private ArrayList<Code> candidatedSolutions;
-    private final int MAX_COMBINATION = 1296;
     private final int CODE_LENGTH = 4;
     private final int NUM_COLORS = 6;
     private Code currentGuess;
@@ -70,7 +69,7 @@ public class AI {
     public int removeCombination(Code codeToRemove){
         int index=-1;
         for(Code c:this.combinations){
-            if(c.isEquals(codeToRemove)) index = this.combinations.indexOf(c);
+            if(c.equals(codeToRemove)) index = this.combinations.indexOf(c);
         }
         if(index!=-1) this.combinations.remove(index);
         
@@ -80,7 +79,7 @@ public class AI {
     public int removeCandidatedSolution(Code codeToRemove){
         int index =-1;
         for(Code c : this.candidatedSolutions){
-            if(c.isEquals(codeToRemove)) index = this.candidatedSolutions.indexOf(c);
+            if(c.equals(codeToRemove)) index = this.candidatedSolutions.indexOf(c);
         }
         if(index != -1) this.combinations.remove(index);
         return index;
@@ -95,19 +94,13 @@ public class AI {
         }
     }
     
-    public int cleanSolutions(GuessResult resultToCheck) {
+    public void cleanSolutions(GuessResult resultToCheck) {
         ArrayList<Code> codesToRemove = new ArrayList();
-        int count=0;
         for(Code c:this.candidatedSolutions){
             GuessResult result = gameboard.checkCode(new Code(this.currentGuess),new Code(c));
-            if(!result.equals(resultToCheck)){
-                codesToRemove.add(c);
-                count ++;
-            }
-        }
-        
+            if(!result.equals(resultToCheck)) codesToRemove.add(c);
+        } 
         this.candidatedSolutions.removeAll(codesToRemove);
-        return count;
     }
     
     public void minimax() {
@@ -134,7 +127,7 @@ public class AI {
         boolean found = false;
         for(Code code : nextGuesses){
             for(Code candidate: this.candidatedSolutions){
-                if(candidate.isEquals(code)){
+                if(candidate.equals(code)){
                     this.currentGuess = new Code(code);
                     found = true;
                 }
@@ -143,7 +136,7 @@ public class AI {
         if(!found){
             for(Code code: nextGuesses){
                 for(Code combination: this.combinations){
-                    if(combination.isEquals(code)) {
+                    if(combination.equals(code)) {
                         this.currentGuess = new Code(code);
                         found = true;
                     }
