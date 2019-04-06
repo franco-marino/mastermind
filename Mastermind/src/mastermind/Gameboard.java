@@ -19,17 +19,16 @@ import java.util.Random;
  */
 public class Gameboard {
     private boolean AI;
-    private int codeLength;
+    private final int codeLength = 4;
     private int attempt;
     private Code gameCode;
     private boolean win;
-    private final int MAX_GAME_ATTEMPTS = 10;
-    private final int MAX_AI_ATTEMPTS = 10;
+    private final int MAX_HUMAN_ATTEMPTS = 10;
+    private final int MAX_AI_ATTEMPTS = 5;
     
     //Player vs CPU
-    public Gameboard(int codeLength) {
+    public Gameboard() {
         this.AI = false;
-        this.codeLength = codeLength;
         this.attempt = 1;
         this.gameCode = generateCode();
         this.win = false;
@@ -41,7 +40,6 @@ public class Gameboard {
         this.gameCode = code;
         this.attempt = 1;
         this.win = false;
-        this.codeLength = this.gameCode.getCodeLength();
     }
     
     public Gameboard(Gameboard gameboard){
@@ -49,7 +47,6 @@ public class Gameboard {
        this.attempt = gameboard.attempt;
        this.gameCode = gameboard.gameCode;
        this.win = gameboard.win;
-       this.codeLength = gameboard.codeLength;
     }
 
     public int getCodeLength() {
@@ -67,33 +64,14 @@ public class Gameboard {
     public Code getGameCode() {
         return gameCode;
     }
-    
-    private void writeToFile(Colors c){
-        try {
-            File f = new File("code.txt");
-            if(!f.exists()) { 
-                System.out.println("aaa");
-                File n = new File("code.txt");
-            }
-            Files.write(Paths.get("code.txt"), c.toString().getBytes(), StandardOpenOption.APPEND);
-        }catch (IOException e) {
-            System.out.println(e);
-        }
-    }
-    
+     
     public void play() throws IOException{
-        //ONLY FOR 
-        /*
-        for(Peg tmp: this.gameCode.getCode()){
-            writeToFile(tmp.getColor());
-        }*/
-        
         Utility.clearConsole();
         if(AI){
             System.out.println("AI is playing");
             playAI();
         } else{
-            System.out.println("User is playing");
+            System.out.println("Human is playing");
             playUser();
         }
     }
@@ -129,13 +107,13 @@ public class Gameboard {
             Utility.displayGuessResult("Result: ",result);
             if(result.isGuessed(this.codeLength)) this.win = true;
             else{
-                int count = ai.cleanSolutions(result);
+                ai.cleanSolutions(result);
                 ai.minimax();
             }
             this.attempt++;
         }while(!gameOver());
-        if(win) Utility.displayWinMessage();
-        else Utility.displayFailMessage();
+        if(win) Utility.displayWinMessage("AI");
+        else Utility.displayFailMessage("AI");
         
     }
     
@@ -144,12 +122,13 @@ public class Gameboard {
             Utility.printInteger("Attempt number: ", attempt);
             Code guessCode = Utility.askForCode(this.codeLength);
             GuessResult result = checkCode(new Code(guessCode),new Code(this.gameCode));
+            Utility.displayCode("Your guess: ", guessCode);
             Utility.displayGuessResult("Result: ",result);            
             if(result.isGuessed(this.codeLength)) this.win = true;
             this.attempt++;
         }while(!gameOver());
-        if(win) System.out.println("You Win!");
-        else System.out.println("You Failed");
+        if(win) Utility.displayWinMessage("Human");
+        else Utility.displayFailMessage("Human");
     }
     
     public GuessResult checkCode(Code guess,Code code){
@@ -162,7 +141,7 @@ public class Gameboard {
     private int totallyCorrect(Code guess,Code code){
         int count=0;
         for(int i=0;i<code.getCodeLength();i++){
-            if(code.getPeg(i).isEquals(guess.getPeg(i))) {
+            if(code.getPeg(i).equals(guess.getPeg(i))) {
                 count++;
                 guess.getPeg(i).setColor(Colors.None);
                 code.getPeg(i).setColor(Colors.None);
@@ -188,7 +167,7 @@ public class Gameboard {
     }
     
     public boolean gameOver(){
-        return (this.attempt>(AI ? MAX_AI_ATTEMPTS : MAX_GAME_ATTEMPTS) || this.win);
+        return (this.attempt>(AI ? MAX_AI_ATTEMPTS : MAX_HUMAN_ATTEMPTS) || this.win);
     }
     
     @Override
