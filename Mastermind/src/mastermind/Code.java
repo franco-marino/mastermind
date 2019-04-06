@@ -43,10 +43,10 @@ public class Code{
         return this.pegs.get(index);
     }
     
-    public boolean isEquals(Code code){
+    public boolean equals(Code code){
         boolean equals = true;
         for(int i=0;i<this.pegs.size();i++){
-            if(!this.pegs.get(i).isEquals(code.getCode().get(i))) equals = false;
+            if(!this.pegs.get(i).equals(code.getCode().get(i))) equals = false;
         }
         return equals;
     }
@@ -54,7 +54,7 @@ public class Code{
     public int contains(Peg p){
         int index = -1;
         for(Peg tmp:this.pegs){
-            if(tmp.isEquals(p)) index = this.getPegIndex(tmp);
+            if(tmp.equals(p)) index = this.getPegIndex(tmp);
         }
         return index;
     }
