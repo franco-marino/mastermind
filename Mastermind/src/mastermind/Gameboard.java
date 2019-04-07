@@ -115,8 +115,11 @@ public class Gameboard {
             this.attempt++;
         }while(!gameOver());
         if(win) Utility.displayWinMessage("AI");
-        else Utility.displayFailMessage("AI");
-        
+        else{
+            Utility.displayFailMessage("AI");
+            Utility.displayCode("[ONLY FOR DEBUG] Game code: ", gameCode);
+        }
+       
     }
     
     private void playUser() throws IOException, UnsupportedEncodingException{
@@ -130,7 +133,10 @@ public class Gameboard {
             this.attempt++;
         }while(!gameOver());
         if(win) Utility.displayWinMessage("Human");
-        else Utility.displayFailMessage("Human");
+        else {
+            Utility.displayFailMessage("Human");
+            Utility.displayCode("[ONLY FOR DEBUG] Game code: ", gameCode);
+        }
     }
     
     public GuessResult checkCode(Code guess,Code code){
