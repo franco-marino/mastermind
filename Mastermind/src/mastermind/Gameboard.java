@@ -68,7 +68,7 @@ public class Gameboard {
      
     public void play() throws IOException{
         Utility.clearConsole();
-        Utility.displayCode("[ONLY FOR DEBUG] Game code: ", gameCode);
+        //Utility.displayCode("[ONLY FOR DEBUG] Game code: ", gameCode);
         if(AI){
             System.out.println("AI is playing");
             playAI();
