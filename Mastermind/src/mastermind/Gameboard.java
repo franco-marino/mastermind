@@ -7,6 +7,7 @@ package mastermind;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -67,6 +68,7 @@ public class Gameboard {
      
     public void play() throws IOException{
         Utility.clearConsole();
+        Utility.displayCode("[ONLY FOR DEBUG] Game code: ", gameCode);
         if(AI){
             System.out.println("AI is playing");
             playAI();
@@ -94,7 +96,7 @@ public class Gameboard {
         return Colors.values()[random.nextInt(Colors.values().length)];
     }
     
-    private void playAI(){
+    private void playAI() throws UnsupportedEncodingException{
         //set combinations
         AI ai = new AI(new Gameboard(this));
         do{
@@ -117,7 +119,7 @@ public class Gameboard {
         
     }
     
-    private void playUser() throws IOException{
+    private void playUser() throws IOException, UnsupportedEncodingException{
         do{
             Utility.printInteger("Attempt number: ", attempt);
             Code guessCode = Utility.askForCode(this.codeLength);

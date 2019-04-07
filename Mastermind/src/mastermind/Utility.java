@@ -8,6 +8,8 @@ package mastermind;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 
 /**
  *
@@ -199,34 +201,56 @@ public class Utility {
         return restart;
     }
 
-    static void displayGuessResult(String message,GuessResult result) {
+    static void displayGuessResult(String message,GuessResult result) throws UnsupportedEncodingException {
         System.out.print(message);
+        PrintStream outStream = new PrintStream(System.out, true, "UTF-8");
         //Display red pegs
         for(Peg redPeg:result.getTotallyCorrect()){
-            System.out.print(redPeg.getColoredPeg());
+           outStream.print(redPeg.getColoredPeg());
         }
         
         //Display white pegs
         for(Peg whitePeg:result.getOnlyValuesCorrect()){
-            System.out.print(whitePeg.getColoredPeg());
+            outStream.print(whitePeg.getColoredPeg());
         }
         
         System.out.println();
     }
     
-    static void displayCode(String message,Code code){
+    static void displayCode(String message,Code code) throws UnsupportedEncodingException{
         System.out.print(message);
+        PrintStream outStream = new PrintStream(System.out, true, "UTF-8");
         for(Peg peg:code.getCode()){
-            System.out.print(peg.getColoredPeg());
+            outStream.print(peg.getColoredPeg());
         }
         System.out.println();
     }
 
     static void displayWinMessage(String player) {
-        System.out.println(player + " win!");
+        String first = "----------------------------------------";
+        String message = player.toUpperCase()+" WIN";
+        int playerLength = (first.length()/2)-(message.length()/2);
+        System.out.println(playerLength);
+        StringBuilder output = new StringBuilder();
+        output.append(first+"\n");
+        output.append("|                                      |\n");
+        output.append("|"+String.format("%"+playerLength+"s%"+(first.length()-playerLength-1)+"s%n", message,"|"));
+        output.append("|                                      |\n");
+        output.append(first+"\n");
+        System.out.println(output);
     }
 
     static void displayFailMessage(String player) {
-        System.out.println("Oh no, " +player+ " lost :(\nTry again");
+        String first = "----------------------------------------";
+        String message = "OH NO,"+player.toUpperCase()+" LOST";
+        int playerLength = (first.length()/2)-(message.length()/2);
+        System.out.println(playerLength);
+        StringBuilder output = new StringBuilder();
+        output.append(first+"\n");
+        output.append("|                                      |\n");
+        output.append("|"+String.format("%"+playerLength+"s%"+(first.length()-playerLength-1)+"s%n", message,"|"));
+        output.append("|                                      |\n");
+        output.append(first+"\n");
+        System.out.println(output);
     }
 }
