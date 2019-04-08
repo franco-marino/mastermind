@@ -1,48 +1,73 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mastermind;
 
 import java.util.ArrayList;
 
 /**
  *
- * @author franc
+ * @author franco-marino
  */
 public class Code{
     private ArrayList<Peg> pegs;
+
+    /**
+     *
+     */
     public Code() {
         this.pegs = new ArrayList();
     }
     
+    /**
+     *
+     * @param code
+     */
     public Code(Code code){
         this.pegs = new ArrayList();
-        for(Peg tmp:code.pegs){
+        code.pegs.forEach((tmp) -> {
             this.pegs.add(new Peg(tmp));
-        }
+        });
     }
     
+    /**
+     *
+     * @param code
+     */
     public Code(int[] code){
         this.pegs = new ArrayList();
         for(int i : code){
-            this.pegs.add(new Peg(Utility.getColor(1,i)));
+            this.pegs.add(new Peg(Colors.getColor(1,i)));
         }
     }
     
+    /**
+     *
+     * @param p
+     */
     public void addPeg(Peg p){
         this.pegs.add(p);
     }
     
+    /**
+     *
+     * @return
+     */
     public ArrayList<Peg> getCode(){
         return this.pegs;
     }
     
+    /**
+     *
+     * @param index
+     * @return
+     */
     public Peg getPeg(int index){
         return this.pegs.get(index);
     }
     
+    /**
+     *
+     * @param code
+     * @return
+     */
     public boolean equals(Code code){
         boolean equals = true;
         for(int i=0;i<this.pegs.size();i++){
@@ -51,6 +76,11 @@ public class Code{
         return equals;
     }
     
+    /**
+     *
+     * @param p
+     * @return
+     */
     public int contains(Peg p){
         int index = -1;
         for(Peg tmp:this.pegs){
@@ -59,21 +89,29 @@ public class Code{
         return index;
     }
       
+    /**
+     *
+     * @param p
+     * @return
+     */
     public int getPegIndex(Peg p){
         return this.pegs.indexOf(p);
     }
     
+    /**
+     *
+     * @return
+     */
     public int getCodeLength(){
         return this.pegs.size();
     }
         
+    @Override
     public String toString(){
         StringBuilder code = new StringBuilder();
-        for(Peg tmp : this.pegs){
+        this.pegs.forEach((tmp) -> {
             code.append(tmp.getColoredPeg());
-        }
-        code.append("\n");
-        
+        });        
         return code.toString();
     }
     

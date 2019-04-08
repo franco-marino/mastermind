@@ -1,34 +1,48 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mastermind;
 
 /**
  *
- * @author franc
+ * @author franco-marino
  */
 public class Peg {
     private Colors color;
     
+    /**
+     *
+     * @param c
+     */
     public Peg(Colors c){
         this.color = c;
     }
     
+    /**
+     *
+     * @param p
+     */
     public Peg(Peg p){
         this.color = p.color;
     }
 
+    /**
+     *
+     * @return
+     */
     public Colors getColor() {
         return color;
     }
     
+    /**
+     *
+     * @param c
+     */
     public void setColor(Colors c){
         this.color = c;
     }
     
-    
+    /**
+     *
+     * @return
+     */
     public String getColoredPeg(){
         String coloredPeg = "";
         switch(this.color){
@@ -56,6 +70,11 @@ public class Peg {
         return coloredPeg;
     }
     
+    /**
+     *
+     * @param p
+     * @return
+     */
     public boolean equals(Peg p){
         return (this.color.equals(p.getColor()));
     }

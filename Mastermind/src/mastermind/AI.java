@@ -1,18 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mastermind;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
-
 /**
  *
- * @author marsh
+ * @author franco-marino
  */
 public class AI {
  
@@ -23,6 +16,10 @@ public class AI {
     private Code currentGuess;
     private Gameboard gameboard;
     
+    /**
+     *
+     * @param gameboard
+     */
     public AI(Gameboard gameboard){
         this.currentGuess = new Code(new int[]{1,1,2,2});
         this.gameboard = new Gameboard(gameboard);
@@ -51,21 +48,37 @@ public class AI {
             current[position] = elements.get(j);
             combinationRecursive(codeLength, position+1, current, elements);
         }
-        return;
     }
     
+    /**
+     *
+     * @return
+     */
     public ArrayList<Code> getCombinations(){
         return this.combinations;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Code> getCandidatedSolutions() {
         return this.candidatedSolutions;
     }
 
+    /**
+     *
+     * @return
+     */
     public Code getCurrentGuess() {
         return currentGuess;
     }
     
+    /**
+     *
+     * @param codeToRemove
+     * @return
+     */
     public int removeCombination(Code codeToRemove){
         int index=-1;
         for(Code c:this.combinations){
@@ -76,6 +89,11 @@ public class AI {
         return index;
     }
     
+    /**
+     *
+     * @param codeToRemove
+     * @return
+     */
     public int removeCandidatedSolution(Code codeToRemove){
         int index =-1;
         for(Code c : this.candidatedSolutions){
@@ -85,6 +103,11 @@ public class AI {
         return index;
     }
     
+    /**
+     *
+     * @param scoresCount
+     * @param pegScore
+     */
     public void registerScoreCount(HashMap<GuessResult,Integer> scoresCount,GuessResult pegScore){
         if(scoresCount.containsKey(pegScore)) {
             scoresCount.replace(pegScore,scoresCount.get(pegScore));
@@ -94,34 +117,46 @@ public class AI {
         }
     }
     
+    /**
+     *
+     * @param resultToCheck
+     */
     public void cleanSolutions(GuessResult resultToCheck) {
         ArrayList<Code> codesToRemove = new ArrayList();
-        for(Code c:this.candidatedSolutions){
+        this.candidatedSolutions.forEach((c) -> {
             GuessResult result = gameboard.checkCode(new Code(this.currentGuess),new Code(c));
-            if(!result.equals(resultToCheck)) codesToRemove.add(c);
-        } 
+            if (!result.equals(resultToCheck)) {
+                codesToRemove.add(c); 
+            }
+        });
         this.candidatedSolutions.removeAll(codesToRemove);
     }
     
+    /**
+     *
+     */
     public void minimax() {
         HashMap<GuessResult, Integer> scoresCount = new HashMap();
         HashMap<Code,Integer> scores = new HashMap();
         ArrayList<Code> nextGuesses = new ArrayList();
         
-        for(Code combination : this.combinations){
-            for(Code candidate : this.candidatedSolutions){
-                GuessResult pegScore = gameboard.checkCode(new Code(combination), new Code(candidate));
+        this.combinations.stream().map((combination) -> {
+            this.candidatedSolutions.stream().map((candidate) -> gameboard.checkCode(new Code(combination), new Code(candidate))).forEachOrdered((pegScore) -> {
                 registerScoreCount(scoresCount,pegScore);
-            }
+            });
+            return combination;
+        }).map((combination) -> {
             int maxScore = (Collections.max(scoresCount.values()));
             scores.put(combination, maxScore);
-            scoresCount.clear();   
-        }
+            return combination;
+        }).forEachOrdered((item) -> {
+            scoresCount.clear();
+        });
         int min =(Collections.min(scores.values()));
         
-        for(Map.Entry<Code,Integer> entry : scores.entrySet()){
-            if(entry.getValue() == min) nextGuesses.add(new Code(entry.getKey()));
-        }
+        scores.entrySet().stream().filter((entry) -> (entry.getValue() == min)).forEachOrdered((entry) -> {
+            nextGuesses.add(new Code(entry.getKey()));
+        });
         
         //get best guess
         boolean found = false;

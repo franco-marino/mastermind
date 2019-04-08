@@ -1,22 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mastermind;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
 import java.util.Random;
 
 /**
  *
- * @author franc
+ * @author franco-marino
  */
 public class Gameboard {
     private boolean AI;
@@ -25,9 +15,13 @@ public class Gameboard {
     private Code gameCode;
     private boolean win;
     private final int MAX_HUMAN_ATTEMPTS = 10;
-    private final int MAX_AI_ATTEMPTS = 5;
+    private final int MAX_AI_ATTEMPTS = 10;
     
     //Player vs CPU
+
+    /**
+     *
+     */
     public Gameboard() {
         this.AI = false;
         this.attempt = 1;
@@ -36,6 +30,11 @@ public class Gameboard {
     }
     
     //CPU vs Player
+
+    /**
+     *
+     * @param code
+     */
     public Gameboard(Code code){
         this.AI = true;
         this.gameCode = code;
@@ -43,6 +42,10 @@ public class Gameboard {
         this.win = false;
     }
     
+    /**
+     *
+     * @param gameboard
+     */
     public Gameboard(Gameboard gameboard){
        this.AI = gameboard.AI;
        this.attempt = gameboard.attempt;
@@ -50,32 +53,51 @@ public class Gameboard {
        this.win = gameboard.win;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCodeLength() {
         return codeLength;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isAI() {
         return AI;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getAttempt() {
         return attempt;
     }
 
+    /**
+     *
+     * @return
+     */
     public Code getGameCode() {
         return gameCode;
     }
      
+    /**
+     *
+     * @throws IOException
+     */
     public void play() throws IOException{
         Utility.clearConsole();
-        //Utility.displayCode("[ONLY FOR DEBUG] Game code: ", gameCode);
         if(AI){
-            System.out.println("AI is playing");
             playAI();
         } else{
-            System.out.println("Human is playing");
             playUser();
         }
+        
+        if(!win) Utility.displayCode("[*] Game code: ", gameCode);
     }
     
     private Code generateCode(){
@@ -115,14 +137,11 @@ public class Gameboard {
             this.attempt++;
         }while(!gameOver());
         if(win) Utility.displayWinMessage("AI");
-        else{
-            Utility.displayFailMessage("AI");
-            Utility.displayCode("[ONLY FOR DEBUG] Game code: ", gameCode);
-        }
+        else Utility.displayFailMessage("AI");
        
     }
     
-    private void playUser() throws IOException, UnsupportedEncodingException{
+    private void playUser() throws IOException{
         do{
             Utility.printInteger("Attempt number: ", attempt);
             Code guessCode = Utility.askForCode(this.codeLength);
@@ -133,12 +152,15 @@ public class Gameboard {
             this.attempt++;
         }while(!gameOver());
         if(win) Utility.displayWinMessage("Human");
-        else {
-            Utility.displayFailMessage("Human");
-            Utility.displayCode("[ONLY FOR DEBUG] Game code: ", gameCode);
-        }
+        else Utility.displayFailMessage("Human");
     }
     
+    /**
+     *
+     * @param guess
+     * @param code
+     * @return
+     */
     public GuessResult checkCode(Code guess,Code code){
         GuessResult result = new GuessResult();
         result.setTotallyCorrect(totallyCorrect(guess,code));
@@ -174,13 +196,12 @@ public class Gameboard {
         return count;
     }
     
+    /**
+     *
+     * @return
+     */
     public boolean gameOver(){
         return (this.attempt>(AI ? MAX_AI_ATTEMPTS : MAX_HUMAN_ATTEMPTS) || this.win);
     }
     
-    @Override
-    public String toString(){
-        return "[*] Gameboard info:\n\tThe AI is " + ((this.AI) ? "playing" : "not playing") + "\n\tCode length: " + this.codeLength;
-    }
-
 }

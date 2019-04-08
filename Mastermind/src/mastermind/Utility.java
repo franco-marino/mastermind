@@ -1,24 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mastermind;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
-
 /**
  *
- * @author franc
+ * @author franco-marino
  */
 public class Utility {
     private final static BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in));
     
-    
+    /**
+     *
+     */
     public static void printBanner(){
         String banner = "  __  __           _                      _           _  \n" +
         " |  \\/  |         | |                    (_)         | | \n" +
@@ -37,6 +31,11 @@ public class Utility {
         System.out.println(rules);
     }
     
+    /**
+     *
+     * @return
+     * @throws IOException
+     */
     public static Gameboard initGame() throws IOException{
         Gameboard game = null;
         int codeLength;
@@ -67,6 +66,12 @@ public class Utility {
         return game;
     }
     
+    /**
+     *
+     * @param length
+     * @return
+     * @throws IOException
+     */
     public static Code askForCode(int length) throws IOException{
         Code code;
         boolean valid;
@@ -75,11 +80,11 @@ public class Utility {
             code = new Code();
             String stringCode = askForString("Choose[R,G,B,Y,W,C]: ",length);
             for(int i=0;i<length && valid;i++){
-                if(getColor(0,stringCode.charAt(i)) == Colors.None) {
+                if(Colors.getColor(0,stringCode.charAt(i)) == Colors.None) {
                     valid = false;
                 }
                 else {
-                    code.addPeg(new Peg(getColor(0,stringCode.charAt(i))));
+                    code.addPeg(new Peg(Colors.getColor(0,stringCode.charAt(i))));
                 }
             }
             if(!valid) System.err.println("Your code is not valid, try again");
@@ -138,46 +143,6 @@ public class Utility {
   
         return choose;
     }
-    
-    public static Colors getColor(int mode,int index){
-        Colors c;
-        if(mode==1) {
-            c = Colors.values()[index];
-        }
-        else{
-            switch(index){
-                case 'R':
-                case 'r':
-                    c = Colors.RED;
-                break;
-                case 'G':
-                case 'g':
-                    c = Colors.GREEN;
-                break;
-                case 'B':
-                case 'b':
-                    c = Colors.BLUE;
-                break;
-                case 'Y':
-                case 'y':
-                    c = Colors.YELLOW;
-                break;
-                case 'W':
-                case 'w':
-                    c = Colors.WHITE;
-                break;
-                case 'C':
-                case 'c':
-                    c = Colors.CYAN;
-                break;
-
-                default: c = Colors.None;
-            }
-        }
-        
-        return c;
-    }
-    
     private static void printColorsMenu(){
         System.out.print("[*] The colors that you can choose: ");
         for(Colors temp :  Colors.values()){
@@ -186,14 +151,26 @@ public class Utility {
         System.out.println();
     }
 
+    /**
+     *
+     * @param message
+     * @param integerToDisplay
+     */
     public static void printInteger(String message,int integerToDisplay){
         System.out.println(message + integerToDisplay);
     }
     
+    /**
+     *
+     */
     public static void clearConsole(){
         System.out.print("\033[H\033[2J");
     }
     
+    /**
+     *
+     * @return
+     */
     public static boolean restartGame(){
         boolean restart = false;
         char choose = askForChar("[*] Do you want to play again?[y,n]: ", new char[]{'y','n'});
@@ -201,56 +178,63 @@ public class Utility {
         return restart;
     }
 
-    static void displayGuessResult(String message,GuessResult result) throws UnsupportedEncodingException {
-        System.out.print(message);
-        PrintStream outStream = new PrintStream(System.out, true, "UTF-8");
-        //Display red pegs
-        for(Peg redPeg:result.getTotallyCorrect()){
-           outStream.print(redPeg.getColoredPeg());
-        }
-        
-        //Display white pegs
-        for(Peg whitePeg:result.getOnlyValuesCorrect()){
-            outStream.print(whitePeg.getColoredPeg());
-        }
-        
-        System.out.println();
+    static void displayGuessResult(String message,GuessResult result) {
+        System.out.println(message + result.toString());
     }
     
-    static void displayCode(String message,Code code) throws UnsupportedEncodingException{
-        System.out.print(message);
-        PrintStream outStream = new PrintStream(System.out, true, "UTF-8");
-        for(Peg peg:code.getCode()){
-            outStream.print(peg.getColoredPeg());
-        }
-        System.out.println();
+    static void displayCode(String message,Code code){
+        System.out.println(message + code.toString());
+ 
     }
 
     static void displayWinMessage(String player) {
-        String first = "----------------------------------------";
-        String message = player.toUpperCase()+" WIN";
-        int playerLength = (first.length()/2)-(message.length()/2);
-        System.out.println(playerLength);
+        String message = player +" WIN";
+        String delimiter  = "";
         StringBuilder output = new StringBuilder();
-        output.append(first+"\n");
-        output.append("|                                      |\n");
-        output.append("|"+String.format("%"+playerLength+"s%"+(first.length()-playerLength-1)+"s%n", message,"|"));
-        output.append("|                                      |\n");
-        output.append(first+"\n");
+        for(int i=0;i<message.length()+10;i++){
+            delimiter+="-";
+        }
+        output.append(delimiter).append("\n");
+        output.append(String.format("%s%"+(delimiter.length()-1)+"s%n","|","|"));
+        output.append(String.format("%s %s%"+(delimiter.length()-message.length()-2)+"s%n","|",message,"|"));
+        output.append(String.format("%s%"+(delimiter.length()-1)+"s%n","|","|"));
+        output.append(delimiter).append("\n");
+        
         System.out.println(output);
+        
+        
     }
 
     static void displayFailMessage(String player) {
-        String first = "----------------------------------------";
-        String message = "OH NO,"+player.toUpperCase()+" LOST";
-        int playerLength = (first.length()/2)-(message.length()/2);
-        System.out.println(playerLength);
+        String message = "OH,NO " +player +" LOST";
+        String delimiter  = "";
         StringBuilder output = new StringBuilder();
-        output.append(first+"\n");
-        output.append("|                                      |\n");
-        output.append("|"+String.format("%"+playerLength+"s%"+(first.length()-playerLength-1)+"s%n", message,"|"));
-        output.append("|                                      |\n");
-        output.append(first+"\n");
+        for(int i=0;i<message.length()+10;i++){
+            delimiter+="-";
+        }
+        output.append(delimiter).append("\n");
+        output.append(String.format("%s%"+(delimiter.length()-1)+"s%n","|","|"));
+        output.append(String.format("%s %s%"+(delimiter.length()-message.length()-2)+"s%n","|",message,"|"));
+        output.append(String.format("%s%"+(delimiter.length()-1)+"s%n","|","|"));
+        output.append(delimiter).append("\n");
+        
         System.out.println(output);
     }
+        
+    static void exitMessage(){
+        String message = "THANK YOU FOR PLAYING";
+        String delimiter  = "";
+        StringBuilder output = new StringBuilder();
+        for(int i=0;i<message.length()+10;i++){
+            delimiter+="-";
+        }
+        output.append(delimiter).append("\n");
+        output.append(String.format("%s%"+(delimiter.length()-1)+"s%n","|","|"));
+        output.append(String.format("%s %s%"+(delimiter.length()-message.length()-2)+"s%n","|",message,"|"));
+        output.append(String.format("%s%"+(delimiter.length()-1)+"s%n","|","|"));
+        output.append(delimiter).append("\n");
+        
+        System.out.println(output);
+    }
+
 }
