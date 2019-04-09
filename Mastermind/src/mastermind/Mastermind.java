@@ -17,7 +17,7 @@ public class Mastermind {
         printBanner();
         do{
             Gameboard gameboard = initGame();
-            if(gameboard !=null){
+            if(gameboard != null){
                  gameboard.play();
                 restart = restartGame();
                 clearConsole();

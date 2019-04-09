@@ -80,11 +80,11 @@ public class Utility {
             code = new Code();
             String stringCode = askForString("Choose[R,G,B,Y,W,C]: ",length);
             for(int i=0;i<length && valid;i++){
-                if(Colors.getColor(0,stringCode.charAt(i)) == Colors.None) {
+                if(Colors.getColor(stringCode.charAt(i)) == Colors.None) {
                     valid = false;
                 }
                 else {
-                    code.addPeg(new Peg(Colors.getColor(0,stringCode.charAt(i))));
+                    code.addPeg(new Peg(Colors.getColor(stringCode.charAt(i))));
                 }
             }
             if(!valid) System.err.println("Your code is not valid, try again");

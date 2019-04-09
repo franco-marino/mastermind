@@ -11,7 +11,9 @@ public enum Colors {
      */
     None,
 
-    /**
+    /**git reset --hard HEAD~1
+
+
      *
      */
     RED,
@@ -47,43 +49,40 @@ public enum Colors {
      * @param index
      * @return
      */
-    public static Colors getColor(int mode,int index){
-        Colors c;
-        if(mode==1) {
-            c = Colors.values()[index];
-        }
-        else{
-            switch(index){
-                case 'R':
-                case 'r':
-                    c = Colors.RED;
-                break;
-                case 'G':
-                case 'g':
-                    c = Colors.GREEN;
-                break;
-                case 'B':
-                case 'b':
-                    c = Colors.BLUE;
-                break;
-                case 'Y':
-                case 'y':
-                    c = Colors.YELLOW;
-                break;
-                case 'W':
-                case 'w':
-                    c = Colors.WHITE;
-                break;
-                case 'C':
-                case 'c':
-                    c = Colors.CYAN;
-                break;
+    public static Colors getColor(int index){
+        return Colors.values()[index]; 
+    }
+    public static Colors getColor(char c){
+        Colors color;
+        switch(c){
+            case 'R':
+            case 'r':
+                color = Colors.RED;
+            break;
+            case 'G':
+            case 'g':
+                color = Colors.GREEN;
+            break;
+            case 'B':
+            case 'b':
+                color = Colors.BLUE;
+            break;
+            case 'Y':
+            case 'y':
+                color = Colors.YELLOW;
+            break;
+            case 'W':
+            case 'w':
+                color = Colors.WHITE;
+            break;
+            case 'C':
+            case 'c':
+                color = Colors.CYAN;
+            break;
 
-                default: c = Colors.None;
-            }
+            default: color = Colors.None;
         }
-        
-        return c;
+        return color;
     }
     
         

@@ -34,7 +34,7 @@ public class Code{
     public Code(int[] code){
         this.pegs = new ArrayList();
         for(int i : code){
-            this.pegs.add(new Peg(Colors.getColor(1,i)));
+            this.pegs.add(new Peg(Colors.getColor(i)));
         }
     }
     
