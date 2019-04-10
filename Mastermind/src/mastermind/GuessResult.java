@@ -64,8 +64,7 @@ public class GuessResult {
     }
     
     /**
-     * 
-     * 
+     * Check if a guess result is equals to another one checking the number of totally correct pegs 
      * @param result
      * @return
      */
@@ -73,6 +72,7 @@ public class GuessResult {
         return ((this.totallyCorrect.size() == result.getTotallyCorrect().size()) && (this.onlyValuesCorrect.size()==result.getOnlyValuesCorrect().size()));
     }
     
+    @Override
     public String toString(){
         StringBuilder guessResult = new StringBuilder();
         //Display red pegs

@@ -6,52 +6,29 @@ package mastermind;
  */
 public enum Colors {
 
-    /**
-     *
-     */
     None,
-
-    /**git reset --hard HEAD~1
-
-
-     *
-     */
     RED,
-
-    /**
-     *
-     */
     GREEN,
-
-    /**
-     *
-     */
     BLUE,
-
-    /**
-     *
-     */
     YELLOW,
-
-    /**
-     *
-     */
     WHITE,
-
-    /**
-     *
-     */
     CYAN;
     
     /**
-     *
-     * @param mode
+     * return a Color by the index
      * @param index
      * @return
      */
     public static Colors getColor(int index){
         return Colors.values()[index]; 
     }
+    
+    /**
+     * return a color by the char passed as parameter, if it is not equals to a color theow a "ColorNotFoundException"
+     * @param c
+     * @return
+     * @throws ColorNotFoundException 
+     */
     public static Colors getColor(char c) throws ColorNotFoundException{
         Colors color;
         switch(c){

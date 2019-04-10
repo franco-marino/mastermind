@@ -1,6 +1,7 @@
 package mastermind;
 
 import java.util.ArrayList;
+import jdk.nashorn.internal.objects.NativeArray;
 
 /**
  *
@@ -78,7 +79,7 @@ public class Code{
     
     /**
      *
-     * @param p
+     * @param pegToCheck
      * @return
      */
     public int contains(Peg pegToCheck){
@@ -91,7 +92,7 @@ public class Code{
       
     /**
      * Search the peg passed in the arrayList and return index
-     * @param p
+     * @param peg
      * @return index of the peg if exists, otherwise return -1
      */
     public int getPegIndex(Peg peg){
@@ -109,9 +110,9 @@ public class Code{
     @Override
     public String toString(){
         StringBuilder code = new StringBuilder();
-        this.pegs.forEach((tmp) -> {
-            code.append(tmp.getColoredPeg());
-        });        
+        for(Peg peg: this.pegs){
+            code.append(peg.getColoredPeg());
+        }
         return code.toString();
     }
     

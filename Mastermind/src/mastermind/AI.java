@@ -3,7 +3,6 @@ package mastermind;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 /**
  *
  * @author franco-marino
@@ -15,7 +14,7 @@ public class AI {
     private final int CODE_LENGTH = 4;
     private final int NUM_COLORS = 6;
     private Code currentGuess;
-    private Gameboard gameboard;
+    private final Gameboard gameboard;
     
     /**
      * Instantiate AI object and create the set of 1296 combinations
@@ -137,19 +136,17 @@ public class AI {
         HashMap<GuessResult, Integer> scoresCount = new HashMap();
         HashMap<Code,Integer> scores = new HashMap();
         ArrayList<Code> nextGuesses = new ArrayList();
-        
-        this.combinations.stream().map((combination) -> {
-            this.candidatedSolutions.stream().map((candidate) -> gameboard.checkCode(new Code(combination), new Code(candidate))).forEachOrdered((pegScore) -> {
-                registerScoreCount(scoresCount,pegScore);
-            });
-            return combination;
-        }).map((combination) -> {
+
+        for(Code combination:this.combinations){
+            for(Code candidate:this.candidatedSolutions){
+                GuessResult pegScore = gameboard.checkCode(new Code(combination), new Code(candidate));
+                registerScoreCount(scoresCount, pegScore);
+            }
             int maxScore = (Collections.max(scoresCount.values()));
             scores.put(combination, maxScore);
-            return combination;
-        }).forEachOrdered((item) -> {
             scoresCount.clear();
-        });
+        }
+      
         int min =(Collections.min(scores.values()));
         
         scores.entrySet().stream().filter((entry) -> (entry.getValue() == min)).forEachOrdered((entry) -> {

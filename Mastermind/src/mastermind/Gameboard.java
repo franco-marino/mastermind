@@ -127,7 +127,6 @@ public class Gameboard {
      * start a game for the AI that use minimax algorithm
      */
     private void playAI(){
-        //set combinations
         AI ai = new AI(new Gameboard(this));
         do{
             Utility.printInteger("Attempt: ", attempt);
@@ -143,12 +142,17 @@ public class Gameboard {
                 ai.minimax();
             }
             this.attempt++;
-        }while(!gameOver());
+        }while(!gameOver() && !isWin());
         if(win) Utility.displayWinMessage("AI");
         else Utility.displayFailMessage("AI");
        
     }
     
+    /**
+     * start a game for the user, asks a code until the number of available attempts ends or he guess the code
+     * @throws IOException
+     * @throws ColorNotFoundException 
+     */
     private void playUser() throws IOException, ColorNotFoundException{
         do{
             Utility.printInteger("Attempt number: ", attempt);
@@ -158,16 +162,16 @@ public class Gameboard {
             Utility.displayGuessResult("Result: ",result);            
             if(result.isGuessed(this.codeLength)) this.win = true;
             this.attempt++;
-        }while(!gameOver());
+        }while(!gameOver() && !isWin());
         if(win) Utility.displayWinMessage("Human");
         else Utility.displayFailMessage("Human");
     }
     
     /**
-     *
+     * check the guess with the code passed as second parameter
      * @param guess
      * @param code
-     * @return
+     * @return a GuessResult object that contains the result of the check
      */
     public GuessResult checkCode(Code guess,Code code){
         GuessResult result = new GuessResult();
@@ -176,6 +180,12 @@ public class Gameboard {
         return result;
     }
     
+    /**
+     * calculate the totally correct pegs in the guess code 
+     * @param guess
+     * @param code
+     * @return number of totally correct pegs
+     */
     private int totallyCorrect(Code guess,Code code){
         int count=0;
         for(int i=0;i<code.getCodeLength();i++){
@@ -188,6 +198,12 @@ public class Gameboard {
         return count;
     }
     
+    /**
+     * calculate the only value correct pegs in the guess code 
+     * @param guess
+     * @param code
+     * @return number of only value correct pegs
+     */
     private int onlyValuesCorrect(Code guess,Code code){
         int count=0;
         for(Peg p : guess.getCode()){
@@ -205,11 +221,19 @@ public class Gameboard {
     }
     
     /**
-     *
-     * @return
+     * checks if the maximum number of attempts has been exceeded
+     * @return if true if game is over
      */
     public boolean gameOver(){
-        return (this.attempt>(AI ? MAX_AI_ATTEMPTS : MAX_HUMAN_ATTEMPTS) || this.win);
+        return (this.attempt>(AI ? MAX_AI_ATTEMPTS : MAX_HUMAN_ATTEMPTS));
+    }
+    
+    /**
+     * check if win attribute is true
+     * @return true if player or AI has won the game
+     */
+    public boolean isWin(){
+        return this.win;
     }
     
 }

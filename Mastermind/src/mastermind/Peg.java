@@ -8,40 +8,40 @@ public class Peg {
     private Colors color;
     
     /**
-     *
-     * @param c
+     * Instatiate new Peg with a color
+     * @param color
      */
-    public Peg(Colors c){
-        this.color = c;
+    public Peg(Colors color){
+        this.color = color;
     }
     
     /**
-     *
-     * @param p
+     * Instatiante new Peg from another peg
+     * @param peg
      */
-    public Peg(Peg p){
-        this.color = p.color;
+    public Peg(Peg peg){
+        this.color = peg.color;
     }
 
     /**
-     *
-     * @return
+     * return Peg color
+     * @return Peg color
      */
     public Colors getColor() {
         return color;
     }
     
     /**
-     *
-     * @param c
+     * set Peg color
+     * @param color
      */
-    public void setColor(Colors c){
-        this.color = c;
+    public void setColor(Colors color){
+        this.color = color;
     }
     
     /**
-     *
-     * @return
+     * return a colored circle
+     * @return a colored unicode string
      */
     public String getColoredPeg(){
         String coloredPeg = "";
@@ -71,12 +71,12 @@ public class Peg {
     }
     
     /**
-     *
-     * @param p
+     * check if this peg is equals to the peg passed as parameter
+     * @param peg
      * @return
      */
-    public boolean equals(Peg p){
-        return (this.color.equals(p.getColor()));
+    public boolean equals(Peg peg){
+        return (this.color.equals(peg.getColor()));
     }
     
 
