@@ -15,12 +15,10 @@ public class Gameboard {
     private Code gameCode;
     private boolean win;
     private final int MAX_HUMAN_ATTEMPTS = 10;
-    private final int MAX_AI_ATTEMPTS = 10;
+    private final int MAX_AI_ATTEMPTS = 7;
     
-    //Player vs CPU
-
     /**
-     *
+     * Instantiate a gameboard for an "Human vs AI" game
      */
     public Gameboard() {
         this.AI = false;
@@ -29,10 +27,8 @@ public class Gameboard {
         this.win = false;
     }
     
-    //CPU vs Player
-
     /**
-     *
+     * Instantiate a gameboard for a "AI vs Human" game
      * @param code
      */
     public Gameboard(Code code){
@@ -43,7 +39,7 @@ public class Gameboard {
     }
     
     /**
-     *
+     * Make a copy from an other gameboard
      * @param gameboard
      */
     public Gameboard(Gameboard gameboard){
@@ -54,42 +50,43 @@ public class Gameboard {
     }
 
     /**
-     *
-     * @return
+     * return codeLength
+     * @return codeLength
      */
     public int getCodeLength() {
         return codeLength;
     }
 
     /**
-     *
-     * @return
+     * return true if AI is playing otherwise false
+     * @return if AI is playing (true or false)
      */
     public boolean isAI() {
         return AI;
     }
 
     /**
-     *
-     * @return
+     * return the attempt
+     * @return the attempt number
      */
     public int getAttempt() {
         return attempt;
     }
 
     /**
-     *
-     * @return
+     * return the game code
+     * @return the game code
      */
-    public Code getGameCode() {
+    private Code getGameCode() {
         return gameCode;
     }
      
     /**
-     *
+     * play Game, if AI is playing call playAI method otherwise call playUser method 
      * @throws IOException
+     * @throws mastermind.ColorNotFoundException
      */
-    public void play() throws IOException{
+    public void play() throws IOException, ColorNotFoundException{
         Utility.clearConsole();
         if(AI){
             playAI();
@@ -100,6 +97,10 @@ public class Gameboard {
         if(!win) Utility.displayCode("[*] Game code: ", gameCode);
     }
     
+    /**
+     * generate a random Code, duplicated are allowed
+     * @return generated random code
+     */
     private Code generateCode(){
         Code c = new Code();
         int i=0;
@@ -113,18 +114,25 @@ public class Gameboard {
         return c;
     }
     
+    /**
+     * Choose a random color from the Colors enum
+     * @return 
+     */
     private Colors generateRandomColor(){
         Random random = new Random();
         return Colors.values()[random.nextInt(Colors.values().length)];
     }
     
-    private void playAI() throws UnsupportedEncodingException{
+    /**
+     * start a game for the AI that use minimax algorithm
+     */
+    private void playAI(){
         //set combinations
         AI ai = new AI(new Gameboard(this));
         do{
             Utility.printInteger("Attempt: ", attempt);
-            ai.removeCombination(ai.getCurrentGuess());
-            ai.removeCandidatedSolution(ai.getCurrentGuess());
+            ai.removeCombination(ai.getCurrentGuess(),ai.getCombinations());
+            ai.removeCombination(ai.getCurrentGuess(),ai.getCandidatedSolutions());     
            
             GuessResult result = checkCode(new Code(ai.getCurrentGuess()),new Code(this.gameCode));
             Utility.displayCode("Guess: ",ai.getCurrentGuess());
@@ -141,7 +149,7 @@ public class Gameboard {
        
     }
     
-    private void playUser() throws IOException{
+    private void playUser() throws IOException, ColorNotFoundException{
         do{
             Utility.printInteger("Attempt number: ", attempt);
             Code guessCode = Utility.askForCode(this.codeLength);

@@ -11,8 +11,9 @@ public class Mastermind {
     /**
      * @param args the command line arguments
      * @throws java.io.IOException
+     * @throws mastermind.ColorNotFoundException
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ColorNotFoundException {
         boolean restart = false;
         printBanner();
         do{

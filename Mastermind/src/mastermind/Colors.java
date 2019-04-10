@@ -52,7 +52,7 @@ public enum Colors {
     public static Colors getColor(int index){
         return Colors.values()[index]; 
     }
-    public static Colors getColor(char c){
+    public static Colors getColor(char c) throws ColorNotFoundException{
         Colors color;
         switch(c){
             case 'R':
@@ -80,7 +80,7 @@ public enum Colors {
                 color = Colors.CYAN;
             break;
 
-            default: color = Colors.None;
+            default: throw new ColorNotFoundException(c);
         }
         return color;
     }

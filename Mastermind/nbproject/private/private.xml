@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/franc/Desktop/mastermind/Mastermind/src/mastermind/Utility.java</file>
-            <file>file:/C:/Users/franc/Desktop/mastermind/Mastermind/src/mastermind/Gameboard.java</file>
-            <file>file:/C:/Users/franc/Desktop/mastermind/Mastermind/src/mastermind/AI.java</file>
-            <file>file:/C:/Users/franc/Desktop/mastermind/Mastermind/src/mastermind/Peg.java</file>
+            <file>file:/home/marsh/mastermind/Mastermind/src/mastermind/Gameboard.java</file>
+            <file>file:/home/marsh/mastermind/Mastermind/src/mastermind/ColorNotFoundException.java</file>
+            <file>file:/home/marsh/mastermind/Mastermind/src/mastermind/Code.java</file>
+            <file>file:/home/marsh/mastermind/Mastermind/src/mastermind/Mastermind.java</file>
+            <file>file:/home/marsh/mastermind/Mastermind/src/mastermind/Colors.java</file>
+            <file>file:/home/marsh/mastermind/Mastermind/src/mastermind/GuessResult.java</file>
         </group>
     </open-files>
 </project-private>

@@ -11,7 +11,7 @@ public class GuessResult {
     private ArrayList<Peg> onlyValuesCorrect;
 
     /**
-     *
+     * Instantiate a guessResult object
      */
     public GuessResult() {
         this.totallyCorrect = new ArrayList<>();
@@ -19,7 +19,7 @@ public class GuessResult {
     }
 
     /**
-     *
+     * get totally correct pegs (red pegs)
      * @return
      */
     public ArrayList<Peg> getTotallyCorrect() {
@@ -27,7 +27,7 @@ public class GuessResult {
     }
 
     /**
-     *
+     * get only value correct pegs (white pegs) 
      * @return
      */
     public ArrayList<Peg> getOnlyValuesCorrect() {
@@ -35,16 +35,16 @@ public class GuessResult {
     }
 
     /**
-     *
+     * check if there are 4 totally correct pegs (red pegs)
      * @param codeLength
-     * @return
+     * @return true if there is a guess
      */
     public boolean isGuessed(int codeLength) {
         return (this.totallyCorrect.size() == codeLength);
     }
     
     /**
-     *
+     * add the number of pegs passed as parameter to the totally correct arrayList
      * @param size
      */
     public void setTotallyCorrect(int size) {
@@ -54,7 +54,7 @@ public class GuessResult {
     }
 
     /**
-     *
+     * add the number of pegs passed as parameter to the only value correct arrayList
      * @param size
      */
     public void setOnlyValuesCorrect(int size) {
@@ -64,7 +64,8 @@ public class GuessResult {
     }
     
     /**
-     *
+     * 
+     * 
      * @param result
      * @return
      */

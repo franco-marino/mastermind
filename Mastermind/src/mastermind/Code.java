@@ -10,14 +10,14 @@ public class Code{
     private ArrayList<Peg> pegs;
 
     /**
-     *
-     */
+    * Instantiate an empty code object 
+    */
     public Code() {
         this.pegs = new ArrayList();
     }
     
     /**
-     *
+     * Instantiate a code from another with a copy
      * @param code
      */
     public Code(Code code){
@@ -28,7 +28,7 @@ public class Code{
     }
     
     /**
-     *
+     * Instantiate a new code from an array of integers that indicates colors index
      * @param code
      */
     public Code(int[] code){
@@ -39,15 +39,15 @@ public class Code{
     }
     
     /**
-     *
-     * @param p
+     * Add a new peg to the code
+     * @param peg
      */
-    public void addPeg(Peg p){
-        this.pegs.add(p);
+    public void addPeg(Peg peg){
+        this.pegs.add(peg);
     }
     
     /**
-     *
+     * return an arrayList of pegs
      * @return
      */
     public ArrayList<Peg> getCode(){
@@ -55,7 +55,7 @@ public class Code{
     }
     
     /**
-     *
+     * return the peg from the arrayList at the passed index
      * @param index
      * @return
      */
@@ -64,7 +64,7 @@ public class Code{
     }
     
     /**
-     *
+     * compare two code and return true if they are equals
      * @param code
      * @return
      */
@@ -81,31 +81,31 @@ public class Code{
      * @param p
      * @return
      */
-    public int contains(Peg p){
+    public int contains(Peg pegToCheck){
         int index = -1;
-        for(Peg tmp:this.pegs){
-            if(tmp.equals(p)) index = this.getPegIndex(tmp);
+        for(Peg peg:this.pegs){
+            if(peg.equals(pegToCheck)) index = this.getPegIndex(peg);
         }
         return index;
     }
       
     /**
-     *
+     * Search the peg passed in the arrayList and return index
      * @param p
-     * @return
+     * @return index of the peg if exists, otherwise return -1
      */
-    public int getPegIndex(Peg p){
-        return this.pegs.indexOf(p);
+    public int getPegIndex(Peg peg){
+        return this.pegs.indexOf(peg);
     }
     
     /**
-     *
-     * @return
+     * 
+     * @return code length
      */
     public int getCodeLength(){
         return this.pegs.size();
     }
-        
+    
     @Override
     public String toString(){
         StringBuilder code = new StringBuilder();

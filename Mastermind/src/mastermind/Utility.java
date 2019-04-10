@@ -11,7 +11,7 @@ public class Utility {
     private final static BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in));
     
     /**
-     *
+     * print a banner and the game 's rules
      */
     public static void printBanner(){
         String banner = "  __  __           _                      _           _  \n" +
@@ -30,13 +30,13 @@ public class Utility {
         System.out.println(banner);
         System.out.println(rules);
     }
-    
+   
     /**
-     *
-     * @return
+     * asks game mode and set the gameboard object 
+     * @return a gameboard
      * @throws IOException
      */
-    public static Gameboard initGame() throws IOException{
+    public static Gameboard initGame() throws IOException, ColorNotFoundException{
         Gameboard game = null;
         int codeLength;
         boolean AI;
@@ -67,12 +67,13 @@ public class Utility {
     }
     
     /**
-     *
+     * asks to user a code as a sequence of char
      * @param length
-     * @return
+     * @return code by the user input
      * @throws IOException
+     * @throws mastermind.ColorNotFoundException
      */
-    public static Code askForCode(int length) throws IOException{
+    public static Code askForCode(int length) throws IOException, ColorNotFoundException{
         Code code;
         boolean valid;
         do{
@@ -80,19 +81,25 @@ public class Utility {
             code = new Code();
             String stringCode = askForString("Choose[R,G,B,Y,W,C]: ",length);
             for(int i=0;i<length && valid;i++){
-                if(Colors.getColor(stringCode.charAt(i)) == Colors.None) {
+                try {
+                    code.addPeg(new Peg(Colors.getColor(stringCode.charAt(i))));  
+                } catch (ColorNotFoundException e) {
+                    System.out.println(e.getMessage());
                     valid = false;
                 }
-                else {
-                    code.addPeg(new Peg(Colors.getColor(stringCode.charAt(i))));
-                }
             }
-            if(!valid) System.err.println("Your code is not valid, try again");
+            //if(!valid) System.err.println("Your code is not valid, try again");
         }while(!valid);
-        
         return code;
     }
     
+    /**
+     * asks to user a string, and check the length
+     * @param message
+     * @param length
+     * @return string from user input
+     * @throws IOException 
+     */
     private static String askForString(String message,int length) throws IOException{
         boolean valid = false;
         String s = "";
@@ -106,6 +113,15 @@ public class Utility {
         return s;
     }
     
+    
+    /**
+     * asks to user an integer value that must be between min and max value passed as parameter
+     * @param message
+     * @param min
+     * @param max
+     * @return an integer from user input
+     * @throws IOException 
+     */
     private static int askForInteger(String message,int min,int max) throws IOException{
         int choose=-1;
         boolean validate = false;
@@ -125,6 +141,12 @@ public class Utility {
         return choose;
     }
     
+    /**
+     * asks to user a char and check if it's valid with the values parameter
+     * @param message
+     * @param values
+     * @return char from input user
+     */
     private static char askForChar(String message,char values[]){
         char choose = 0;
         boolean validate = false;
@@ -143,6 +165,9 @@ public class Utility {
   
         return choose;
     }
+    /**
+     * print list of colors that user can use
+     */
     private static void printColorsMenu(){
         System.out.print("[*] The colors that you can choose: ");
         for(Colors temp :  Colors.values()){
@@ -152,7 +177,7 @@ public class Utility {
     }
 
     /**
-     *
+     * print the message and the integer passed as parameter
      * @param message
      * @param integerToDisplay
      */
@@ -161,15 +186,15 @@ public class Utility {
     }
     
     /**
-     *
+     * clear the console(it works only on a terminal)
      */
     public static void clearConsole(){
         System.out.print("\033[H\033[2J");
     }
     
     /**
-     *
-     * @return
+     * asks for a char(y/n=) to decide whether to start the game
+     * @return true if input is equals to 'y' otherwise false 
      */
     public static boolean restartGame(){
         boolean restart = false;
@@ -178,15 +203,29 @@ public class Utility {
         return restart;
     }
 
+    /**
+     * Display the message and the guess Result passed as parameter
+     * @param message
+     * @param result 
+     */
     static void displayGuessResult(String message,GuessResult result) {
         System.out.println(message + result.toString());
     }
     
+    /**
+     * Display the message and the code passed as parameter
+     * @param message
+     * @param code 
+     */
     static void displayCode(String message,Code code){
         System.out.println(message + code.toString());
  
     }
-
+    
+    /**
+     * Display the win message for the player passed as parameter
+     * @param player 
+     */
     static void displayWinMessage(String player) {
         String message = player +" WIN";
         String delimiter  = "";
@@ -204,7 +243,11 @@ public class Utility {
         
         
     }
-
+    
+    /**
+     * Display the fail message for the player passed as parameter
+     * @param player 
+     */
     static void displayFailMessage(String player) {
         String message = "OH,NO " +player +" LOST";
         String delimiter  = "";
@@ -220,7 +263,10 @@ public class Utility {
         
         System.out.println(output);
     }
-        
+    
+    /**
+     * Output of message showed when game end
+     */
     static void exitMessage(){
         String message = "THANK YOU FOR PLAYING";
         String delimiter  = "";

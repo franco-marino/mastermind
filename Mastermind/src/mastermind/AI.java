@@ -3,6 +3,7 @@ package mastermind;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 /**
  *
  * @author franco-marino
@@ -17,7 +18,7 @@ public class AI {
     private Gameboard gameboard;
     
     /**
-     *
+     * Instantiate AI object and create the set of 1296 combinations
      * @param gameboard
      */
     public AI(Gameboard gameboard){
@@ -26,6 +27,9 @@ public class AI {
         createSet();
     }
     
+    /**
+     * Create the set of 1296 code combinations
+     */
     private void createSet(){
         this.combinations = new ArrayList<>();
         int[] current = new int[]{0,0,0,0};
@@ -38,6 +42,13 @@ public class AI {
         candidatedSolutions = new ArrayList<>(combinations);
     }
     
+    /**
+     * Recursive function used to create set of combinations
+     * @param codeLength
+     * @param position
+     * @param current
+     * @param elements 
+     */
     private void combinationRecursive(int codeLength,int position,int[] current, ArrayList<Integer>elements){
         if(position >= codeLength){
             this.combinations.add(new Code(current));
@@ -51,60 +62,47 @@ public class AI {
     }
     
     /**
-     *
-     * @return
+     * return combinations arrayList
+     * @return an arrayList of combinations
      */
     public ArrayList<Code> getCombinations(){
         return this.combinations;
     }
 
     /**
-     *
-     * @return
+     * return candidate solutions
+     * @return an arrayList of combinations
      */
     public ArrayList<Code> getCandidatedSolutions() {
         return this.candidatedSolutions;
     }
 
     /**
-     *
-     * @return
+     * return currentGuess
+     * @return AI current Guess
      */
     public Code getCurrentGuess() {
         return currentGuess;
     }
     
     /**
-     *
+     * remove a code from combinations arrayList
      * @param codeToRemove
-     * @return
+     * @param whereRemove
+     * @return index of removed combination
      */
-    public int removeCombination(Code codeToRemove){
+    public int removeCombination(Code codeToRemove, ArrayList<Code> whereRemove){
         int index=-1;
-        for(Code c:this.combinations){
-            if(c.equals(codeToRemove)) index = this.combinations.indexOf(c);
+        for (Code c : whereRemove) {
+            if(c.equals(codeToRemove)) index = whereRemove.indexOf(c);
         }
-        if(index!=-1) this.combinations.remove(index);
+        if(index!=-1) whereRemove.remove(index);
         
         return index;
     }
     
     /**
-     *
-     * @param codeToRemove
-     * @return
-     */
-    public int removeCandidatedSolution(Code codeToRemove){
-        int index =-1;
-        for(Code c : this.candidatedSolutions){
-            if(c.equals(codeToRemove)) index = this.candidatedSolutions.indexOf(c);
-        }
-        if(index != -1) this.combinations.remove(index);
-        return index;
-    }
-    
-    /**
-     *
+     * increment score if guessResult already exists, otherwise add a new entry and set score=1
      * @param scoresCount
      * @param pegScore
      */
@@ -118,7 +116,7 @@ public class AI {
     }
     
     /**
-     *
+     * remove all entry from scoreCount HashMap
      * @param resultToCheck
      */
     public void cleanSolutions(GuessResult resultToCheck) {
@@ -133,7 +131,7 @@ public class AI {
     }
     
     /**
-     *
+     * implementation of minimax algorithm. It's used to get the best guess for the next turn
      */
     public void minimax() {
         HashMap<GuessResult, Integer> scoresCount = new HashMap();
