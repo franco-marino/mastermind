@@ -127,7 +127,7 @@ public class Gameboard {
     }
     
     /**
-     * start a game for the AI that use minimax algorithm
+     * start a game for the AI that use minmax algorithm
      */
     private void playAI(){
         AI ai = new AI(new Gameboard(this));
@@ -142,7 +142,7 @@ public class Gameboard {
             if(result.isGuessed(this.codeLength)) this.win = true;
             else{
                 ai.cleanSolutions(result);
-                ai.minimax();
+                ai.minmax();
             }
             this.attempt++;
         }while(!gameOver() && !isWin());

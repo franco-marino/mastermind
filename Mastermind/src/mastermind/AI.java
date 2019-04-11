@@ -119,14 +119,14 @@ public class AI {
         Iterator<Code> it = this.candidatedSolutions.iterator();
         while (it.hasNext()){
             GuessResult result = gameboard.checkCode(new Code(this.currentGuess),new Code(it.next()));
-            it.remove();
+            if(!result.equals(resultToCheck)) it.remove();
         }
     }
     
     /**
-     * implementation of minimax algorithm. It's used to get the best guess for the next turn
+     * implementation of minmax algorithm. It's used to get the best guess for the next turn
      */
-    public void minimax() {
+    public void minmax() {
         HashMap<GuessResult, Integer> scoresCount = new HashMap();
         HashMap<Code,Integer> scores = new HashMap();
         ArrayList<Code> nextGuesses = new ArrayList();
