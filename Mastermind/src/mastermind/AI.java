@@ -3,6 +3,7 @@ package mastermind;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 /**
  *
  * @author franco-marino
@@ -106,27 +107,20 @@ public class AI {
      * @param pegScore
      */
     public void registerScoreCount(HashMap<GuessResult,Integer> scoresCount,GuessResult pegScore){
-        if(scoresCount.containsKey(pegScore)) {
-            scoresCount.replace(pegScore,scoresCount.get(pegScore));
-        }
-        else {
-            scoresCount.put(pegScore,1);
-        }
+        if(scoresCount.containsKey(pegScore)) scoresCount.replace(pegScore,scoresCount.get(pegScore)+1);
+        else scoresCount.put(pegScore,1);
     }
     
     /**
-     * remove all entry from scoreCount HashMap
+     * remove all code that not give the same guessResult of currentGuess
      * @param resultToCheck
      */
     public void cleanSolutions(GuessResult resultToCheck) {
-        ArrayList<Code> codesToRemove = new ArrayList();
-        this.candidatedSolutions.forEach((c) -> {
-            GuessResult result = gameboard.checkCode(new Code(this.currentGuess),new Code(c));
-            if (!result.equals(resultToCheck)) {
-                codesToRemove.add(c); 
-            }
-        });
-        this.candidatedSolutions.removeAll(codesToRemove);
+        Iterator<Code> it = this.candidatedSolutions.iterator();
+        while (it.hasNext()){
+            GuessResult result = gameboard.checkCode(new Code(this.currentGuess),new Code(it.next()));
+            it.remove();
+        }
     }
     
     /**

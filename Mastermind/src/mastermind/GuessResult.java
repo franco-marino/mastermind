@@ -71,6 +71,11 @@ public class GuessResult {
     public boolean equals(GuessResult result){
         return ((this.totallyCorrect.size() == result.getTotallyCorrect().size()) && (this.onlyValuesCorrect.size()==result.getOnlyValuesCorrect().size()));
     }
+        
+    @Override
+    public int hashCode(){
+        return 2*this.totallyCorrect.size() + 3*this.onlyValuesCorrect.size();
+    }
     
     @Override
     public String toString(){

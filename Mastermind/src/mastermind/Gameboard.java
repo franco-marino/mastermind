@@ -2,6 +2,7 @@ package mastermind;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -15,7 +16,7 @@ public class Gameboard {
     private Code gameCode;
     private boolean win;
     private final int MAX_HUMAN_ATTEMPTS = 10;
-    private final int MAX_AI_ATTEMPTS = 7;
+    private final int MAX_AI_ATTEMPTS = 5;
     
     /**
      * Instantiate a gameboard for an "Human vs AI" game
@@ -88,6 +89,7 @@ public class Gameboard {
      */
     public void play() throws IOException, ColorNotFoundException{
         Utility.clearConsole();
+
         if(AI){
             playAI();
         } else{
@@ -95,6 +97,7 @@ public class Gameboard {
         }
         
         if(!win) Utility.displayCode("[*] Game code: ", gameCode);
+        
     }
     
     /**
