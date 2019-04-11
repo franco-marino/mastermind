@@ -63,13 +63,10 @@ public class GuessResult {
         }
     }
     
-    /**
-     * Check if a guess result is equals to another one checking the number of totally correct pegs 
-     * @param result
-     * @return
-     */
-    public boolean equals(GuessResult result){
-        return ((this.totallyCorrect.size() == result.getTotallyCorrect().size()) && (this.onlyValuesCorrect.size()==result.getOnlyValuesCorrect().size()));
+
+    
+    public boolean equals(Object o){
+        return ((this.totallyCorrect.size() == ((GuessResult) o).getTotallyCorrect().size()) && (this.onlyValuesCorrect.size()==((GuessResult) o).getOnlyValuesCorrect().size()));
     }
         
     @Override
