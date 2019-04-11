@@ -112,6 +112,7 @@ public class AI {
     /**
      * remove all code that not give the same guessResult of currentGuess
      * @param resultToCheck
+     * @param gameboard
      */
     public void cleanSolutions(GuessResult resultToCheck,Gameboard gameboard) {
         Iterator<Code> it = this.candidatedSolutions.iterator();
