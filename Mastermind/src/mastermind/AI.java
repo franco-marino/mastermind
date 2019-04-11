@@ -135,7 +135,7 @@ public class AI {
             for(Code candidate:this.candidatedSolutions){
                 GuessResult pegScore = gameboard.checkCode(new Code(combination), new Code(candidate));
                 registerScoreCount(scoresCount, pegScore);
-            }
+                }
             int maxScore = (Collections.max(scoresCount.values()));
             scores.put(combination, maxScore);
             scoresCount.clear();
