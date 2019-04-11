@@ -130,7 +130,7 @@ public class Gameboard {
      * start a game for the AI that use minmax algorithm
      */
     private void playAI(){
-        AI ai = new AI(new Gameboard(this));
+        AI ai = new AI();
         do{
             Utility.printInteger("Attempt: ", attempt);
             ai.removeCombination(ai.getCurrentGuess(),ai.getCombinations());
@@ -141,8 +141,8 @@ public class Gameboard {
             Utility.displayGuessResult("Result: ",result);
             if(result.isGuessed(this.codeLength)) this.win = true;
             else{
-                ai.cleanSolutions(result);
-                ai.minmax();
+                ai.cleanSolutions(result,this);
+                ai.minmax(this);
             }
             this.attempt++;
         }while(!gameOver() && !isWin());

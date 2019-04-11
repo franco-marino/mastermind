@@ -15,15 +15,13 @@ public class AI {
     private final int CODE_LENGTH = 4;
     private final int NUM_COLORS = 6;
     private Code currentGuess;
-    private final Gameboard gameboard;
     
     /**
      * Instantiate AI object and create the set of 1296 combinations
      * @param gameboard
      */
-    public AI(Gameboard gameboard){
+    public AI(){
         this.currentGuess = new Code(new int[]{1,1,2,2});
-        this.gameboard = new Gameboard(gameboard);
         createSet();
     }
     
@@ -115,7 +113,7 @@ public class AI {
      * remove all code that not give the same guessResult of currentGuess
      * @param resultToCheck
      */
-    public void cleanSolutions(GuessResult resultToCheck) {
+    public void cleanSolutions(GuessResult resultToCheck,Gameboard gameboard) {
         Iterator<Code> it = this.candidatedSolutions.iterator();
         while (it.hasNext()){
             GuessResult result = gameboard.checkCode(new Code(this.currentGuess),new Code(it.next()));
@@ -126,7 +124,7 @@ public class AI {
     /**
      * implementation of minmax algorithm. It's used to get the best guess for the next turn
      */
-    public void minmax() {
+    public void minmax(Gameboard gameboard) {
         HashMap<GuessResult, Integer> scoresCount = new HashMap();
         HashMap<Code,Integer> scores = new HashMap();
         ArrayList<Code> nextGuesses = new ArrayList();
