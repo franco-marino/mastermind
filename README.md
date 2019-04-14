@@ -4,8 +4,8 @@
 It has only been tested on linux (fedora and ubuntu), on windows I'm not sure Unicode characters appear on the command prompt or on powershell. There are no problems using Git Bash and following [this](https://stackoverflow.com/questions/48402025/unicode-output-java-windows-cmd) procedure on Stack Overflow.
 
 # The game
-There are two game modes: Human VS AI and AI vs Human. In the first one a random code is generated
-and there are 10 attempts to guess. in the second mode the user chooses a code and the AI guesses it 
+There are two game modes: Human vs AI and AI vs Human. In the first one a random code is generated
+and there are 10 attempts to guess. In the second mode the user chooses a code and the AI guesses it 
 using the Knuth Five guess algorithm ([Wikipedia explanation](https://en.wikipedia.org/wiki/Mastermind_(board_game)#Five-guess_algorithm))
 
 # How to play
