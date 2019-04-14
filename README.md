@@ -12,9 +12,9 @@ using the Knuth Five guess algorithm ([Wikipedia explanation](https://en.wikiped
 The game is written in Java so it must be installed on your PC
 
 ```bash
-$ git clone https://github.com/franco-marino/mastermind.git
-$ cd mastermind/Mastermind/dist 
-$ java -jar Mastermind.jar 
+git clone https://github.com/franco-marino/mastermind.git
+cd mastermind/Mastermind/dist 
+java -jar Mastermind.jar 
 ```
 #### And then play it!
 
