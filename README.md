@@ -25,7 +25,7 @@ java -jar Mastermind.jar
 
 ### Menu
 
-![Menu](https://i.imgur.com/rkOlgzW.png)
+![Menu](https://i.imgur.com/MUkCmf6.png)
 
 ### Human vs AI
 
