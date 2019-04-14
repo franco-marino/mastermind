@@ -23,7 +23,7 @@ public class Utility {
         "                                                         \n" +
         "                                                         ";
         String rules = "Welcome, Mastermind is a code-breaking game. The purpose is to guess the secret code decided by the player or AI\n"
-                        + "according to the chosen game mode. There are 6 colors and the code consists of 6 pegs, duplicates are allowed.\n"
+                        + "according to the chosen game mode. There are 6 colors and the code consists of 4 pegs, duplicates are allowed.\n"
                         + "You win if the code is matched within 10 attempts.Every time you try to guess the gameboard returns a code formed by\n"
                         + "red and white pegs: the red ones indicate the number of pegs of the right color and in the right position, \n"
                         + "the white ones indicate the pegs of the right color but in the wrong position. Have fun with the mastermind! ";
