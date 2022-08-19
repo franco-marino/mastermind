@@ -1,6 +1,6 @@
 # Mastermind
 
-> This is the project I've created for my programming exam of the IT security course at the **"La Statale" University of Milan**.
+> This is the project I've created for my programming exam of the IT security course at the **University of Milan**.
 > It has only been tested on linux (fedora and ubuntu), on windows I'm not sure Unicode characters appear on the command prompt or on powershell. There are no problems using Git Bash and following [this](https://stackoverflow.com/questions/48402025/unicode-output-java-windows-cmd) procedure on Stack Overflow.
 
 # The game
